@@ -18,6 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
     <SpeedInsights/>
+    <Analytics/>
       <body className={outfit.className}>
         <div className="background-blobs">
           <div className="blob blob-1"></div>
