@@ -17,6 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+    <SpeedInsights/>
       <body className={outfit.className}>
         <div className="background-blobs">
           <div className="blob blob-1"></div>
