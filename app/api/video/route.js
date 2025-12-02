@@ -12,7 +12,7 @@ export async function GET(request) {
     // Headers from user request
     const headers = {
         "Host": "www.dijidemi.com",
-        "Cookie": "_ga=GA1.1.566625878.1762887069; ASP.NET_SessionId=wyedmcqju4wjxqyyz3lk2sn0; cf_clearance=F3gxwUqUhtl.TP.lWWmfGHCc2RC2UZ0IjLOLeWtcDEM-1764450862-1.2.1.1-wYlgauCxdQJ7TLKLUyaDCPuhrFKOpnVliNLdZKjqveAb3srrQBMK96gQlpff.OPH_LY0tNhZDnM2EIK9JqmGiqxlhb.nQP7B23CBRQg3ClBFpaD0Qs9wIsXHzxQT9ItB2wqrxTGiCrQA6B_gZhpwHtyMQa1V2vnDv4quKu.v_ujAT3C26hJCEXS0HJ_nAdHiDYqOJJzFZ12eyB4sk8D8ewIARVbnGXh.xYSAUbH2S50; usrtkn=tkn=wyedmcqju4wjxqyyz3lk2sn0; rememberMe=UserName=C30GH3EFE37LE31CC3ENI30IO3IAB390F3DEO3IA&Password=C30GH3L0E3BSE4ECC3CM; _ga_L3RCSWSLG5=GS2.1.s1764450862$o9$g1$t1764450871$j51$l0$h0",
+         "Cookie": "_ga=GA1.1.566625878.1762887069; _ga_L3RCSWSLG5=GS2.1.s1764450862$o9$g1$t1764452337$j60$l0$h0; ASP.NET_SessionId=eh4ao2o3i2g05l15pk0t3smm; cf_clearance=FwWrEil84H_SUaOBYcnV.rB7YScCZQ637lGyS7zPkJ0-1764711795-1.2.1.1-134Jq8aQWtOx0YJken5qj4NYHdA55ELGhzOmtk9fbcvumFygQprGd8ntGz71_F5IAqOhgBg.ZrJKSJg_E3s_RgiveHySAvttQ08cuN1ZRWl9ZDOAZ5C82TU0nPOMEaxmcNM9QLW_TeFCMWXn4y0oFRR7c3TjIhDXLNLCWfLIH.LdovWGyo7XGUNPiokXnkvm1bLSG6viCbYJKx1qU2_dumBhN8lkOoAgSmZ6rFreeh4; usrtkn=tkn=eh4ao2o3i2g05l15pk0t3smm; rememberMe=UserName=T3POT40CP3OLY3VFV4DYB2O0C30GB390M3OME33F&Password=T3POT480P3UGY5NRV4BB",
         "Sec-Ch-Ua-Platform": "\"macOS\"",
         "Accept-Language": "en-US,en;q=0.9",
         "Sec-Ch-Ua": "\"Not_A Brand\";v=\"99\", \"Chromium\";v=\"142\"",
