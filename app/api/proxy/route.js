@@ -26,7 +26,7 @@ export async function GET(request) {
             headers: {
                 'Accept': 'application/json, text/plain, */*',
                 'Accept-Language': 'en-US,en;q=0.9',
-                 "Cookie": "rememberMe=UserName=M3FBN3NVD363E31CI3OUH2Z6F34YK3NOX49BW3V6&Password=M3FBN3Y0D3A7E4ECI3MM; usrtkn=tkn=ps1yyokvtmcgw4tf22vgryyq; cf_clearance=_q7lzePFeOQjjy6Y9fJKlZGuqiEWRsiTw9VKaQPWiKs-1764858825-1.2.1.1-oIDtHuHXFcHs9s175TBK3CvZz_z0QxE_x_EzRd89.Xz7yazL958mMimFFYy3AQfQyW0MTVGEqBzdkTrGFxoL1JQdtO2hOOkKQptSjE4aALRBHQHwV2Jc0w_6uYjJEdLqUvhjsJi3viYtRoVcION2zg1G7c4zZW6u9kEV03uqWpEAzugJQJ4frSv38eM8qSsWw6CG.8MJMwbq85fE1VcqrNogakPDB3KcyKF5izgknrs; ASP.NET_SessionId=ps1yyokvtmcgw4tf22vgryyq",
+                 "Cookie": "usrtkn=tkn=2dffhty3nz3cuckqvyqyvrtl; rememberMe=UserName=X3YMB350H3C9B2V0W4FLL34LO3IAU473V464U3S7&Password=X3YMB3B0H3GLB480W4D0",
                 'User-Agent': 'DijidemiMobile/39 CFNetwork/3860.300.31 Darwin/25.2.0',
                 'Accept-Encoding': 'gzip, deflate, br',
                 'Connection': 'keep-alive',
