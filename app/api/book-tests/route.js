@@ -10,7 +10,7 @@ export async function POST(request) {
 
         // Hardcoded headers and cookies as per user request
         const headers = {
-            "Cookie": "_ga=GA1.1.566625878.1762887069; _ga_L3RCSWSLG5=GS2.1.s1764450862$o9$g1$t1764452337$j60$l0$h0; ASP.NET_SessionId=eh4ao2o3i2g05l15pk0t3smm; cf_clearance=FwWrEil84H_SUaOBYcnV.rB7YScCZQ637lGyS7zPkJ0-1764711795-1.2.1.1-134Jq8aQWtOx0YJken5qj4NYHdA55ELGhzOmtk9fbcvumFygQprGd8ntGz71_F5IAqOhgBg.ZrJKSJg_E3s_RgiveHySAvttQ08cuN1ZRWl9ZDOAZ5C82TU0nPOMEaxmcNM9QLW_TeFCMWXn4y0oFRR7c3TjIhDXLNLCWfLIH.LdovWGyo7XGUNPiokXnkvm1bLSG6viCbYJKx1qU2_dumBhN8lkOoAgSmZ6rFreeh4; usrtkn=tkn=eh4ao2o3i2g05l15pk0t3smm; rememberMe=UserName=T3POT40CP3OLY3VFV4DYB2O0C30GB390M3OME33F&Password=T3POT480P3UGY5NRV4BB",
+            "Cookie": "rememberMe=UserName=M3FBN3NVD363E31CI3OUH2Z6F34YK3NOX49BW3V6&Password=M3FBN3Y0D3A7E4ECI3MM; usrtkn=tkn=ps1yyokvtmcgw4tf22vgryyq; cf_clearance=_q7lzePFeOQjjy6Y9fJKlZGuqiEWRsiTw9VKaQPWiKs-1764858825-1.2.1.1-oIDtHuHXFcHs9s175TBK3CvZz_z0QxE_x_EzRd89.Xz7yazL958mMimFFYy3AQfQyW0MTVGEqBzdkTrGFxoL1JQdtO2hOOkKQptSjE4aALRBHQHwV2Jc0w_6uYjJEdLqUvhjsJi3viYtRoVcION2zg1G7c4zZW6u9kEV03uqWpEAzugJQJ4frSv38eM8qSsWw6CG.8MJMwbq85fE1VcqrNogakPDB3KcyKF5izgknrs; ASP.NET_SessionId=ps1yyokvtmcgw4tf22vgryyq",
             "Content-Length": "0",
             "Sec-Ch-Ua-Platform": "\"macOS\"",
             "Accept-Language": "en-US,en;q=0.9",
