@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import cookieManager from '@/lib/cookieManager';
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
@@ -23,15 +24,7 @@ export async function GET(request) {
     try {
         const response = await fetch(url, {
             method: 'GET',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Accept-Language': 'en-US,en;q=0.9',
-                 "Cookie": "usrtkn=tkn=2dffhty3nz3cuckqvyqyvrtl; rememberMe=UserName=X3YMB350H3C9B2V0W4FLL34LO3IAU473V464U3S7&Password=X3YMB3B0H3GLB480W4D0",
-                'User-Agent': 'DijidemiMobile/39 CFNetwork/3860.300.31 Darwin/25.2.0',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Connection': 'keep-alive',
-                'Host': 'www.dijidemi.com',
-            },
+            headers: await cookieManager.getHeaders(),
         });
 
         if (!response.ok) {

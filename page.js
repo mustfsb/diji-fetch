@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import booksData from './data/books.json';
 
 export default function Home() {
-  const [mode, setMode] = useState('bookBrowser'); // 'bookBrowser' | 'manual'
+  const [theme, setTheme] = useState('dark');
   const [testId, setTestId] = useState('');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
@@ -19,6 +19,15 @@ export default function Home() {
   const [bookTests, setBookTests] = useState([]);
   const [loadingTests, setLoadingTests] = useState(false);
   const [selectedTest, setSelectedTest] = useState(null);
+
+  // Theme Effect
+  useEffect(() => {
+    document.body.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   const handleFetch = async (idToFetch = testId) => {
     if (!idToFetch) return;
@@ -113,7 +122,12 @@ export default function Home() {
   return (
     <main className="main-container">
       <div className="content-wrapper">
-        <h1 className="title">Diji-Fetch</h1>
+        <div className="header-row">
+          <h1 className="title">Diji-Fetch</h1>
+          <button className="theme-toggle" onClick={toggleTheme} title="Temayı Değiştir">
+            {theme === 'dark' ? '🌙' : '☀️'}
+          </button>
+        </div>
 
         {/* Book Browser UI */}
         {!selectedBook ? (
@@ -126,13 +140,17 @@ export default function Home() {
           </div>
         ) : (
           <div className="book-detail">
-            <button className="back-button" onClick={() => setSelectedBook(null)}>← Kitaplara Dön</button>
-            <h2 className="subtitle">{selectedBook.name}</h2>
+            <div className="nav-header">
+              <button className="back-button" onClick={() => setSelectedBook(null)}>
+                ← Kitaplara Dön
+              </button>
+              <h2 className="subtitle">{selectedBook.name}</h2>
+            </div>
 
             <div className="split-view">
               {/* Test List */}
               <div className="tests-list">
-                {loadingTests ? <p>Testler yükleniyor...</p> : (
+                {loadingTests ? <p style={{ color: 'var(--text-muted)' }}>Testler yükleniyor...</p> : (
                   bookTests.map((test) => (
                     <div
                       key={test.id}
@@ -150,7 +168,7 @@ export default function Home() {
               <div className="solutions-view">
                 {selectedTest && (
                   <>
-                    <h3 className="test-title">{selectedTest.name} Çözümleri</h3>
+                    <h3 className="test-title">{selectedTest.name}</h3>
 
                     {loading && (
                       <div className="fetch-status-container">
@@ -161,8 +179,10 @@ export default function Home() {
 
                     {/* Answer Key Section */}
                     {data && (
-                      <div className="answer-key-section">
-                        <h4>Cevap Anahtarı</h4>
+                      <div className="section-card">
+                        <div className="section-header">
+                          <h4 className="section-title">Cevap Anahtarı</h4>
+                        </div>
                         <div className="answers-grid">
                           {data.CevapAnahtari.split('').map((answer, index) => (
                             <div key={index} className="answer-bubble">
@@ -184,17 +204,17 @@ export default function Home() {
 
                     {/* Video Solutions Section */}
                     {videos.length > 0 && (
-                      <div className="video-section">
-                        <h4>Video Çözümler</h4>
+                      <div className="section-card">
+                        <div className="section-header">
+                          <h4 className="section-title">Video Çözümler</h4>
+                        </div>
                         <div className="questions-grid">
                           {videos.map((video) => (
-                            <div key={video.questionNumber} className="question-card">
-                              <div className="question-header">
-                                <span className="question-number">{video.questionNumber}</span>
+                            <div key={video.questionNumber} className="video-card">
+                              <div className="video-header">
+                                <span className="question-number" style={{ color: 'white', fontWeight: 'bold' }}>Soru {video.questionNumber}</span>
                               </div>
-                              <div className="video-container">
-                                <video controls src={video.url} className="video-player"></video>
-                              </div>
+                              <video controls src={video.url} className="video-player"></video>
                             </div>
                           ))}
                         </div>

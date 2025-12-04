@@ -1,12 +1,12 @@
-import { Outfit } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
 
-const outfit = Outfit({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  weight: ["300", "400", "600"],
-  variable: "--font-outfit",
+  variable: "--font-montserrat",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata = {
@@ -17,9 +17,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-    <SpeedInsights/>
-    <Analytics/>
-      <body className={outfit.className}>
+      <SpeedInsights />
+      <Analytics />
+      <body className={montserrat.className}>
         <div className="background-blobs">
           <div className="blob blob-1"></div>
           <div className="blob blob-2"></div>
