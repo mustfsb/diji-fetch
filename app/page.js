@@ -1,6 +1,55 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import booksData from './data/books.json';
+
+// Kitapları derslere göre gruplandıran yardımcı fonksiyon
+const groupBooksBySubject = (books) => {
+  const subjectGroups = {};
+  
+  // Kitap adından ders adını çıkarmak için basit bir regex kullanılır
+  // Örn: "ETAP TYT TÜRKÇE 1.SAYI -2026" -> "TÜRKÇE"
+  const subjectRegex = /(TÜRKÇE|MATEMATİK|KİMYA|FİZİK|GEOMETRİ|BİYOLOJİ)/i;
+
+  books.forEach(book => {
+    const match = book.name.match(subjectRegex);
+    let subject = 'Diğer'; // Varsayılan ders
+
+    if (match) {
+      // Bulunan ders adını büyük harfle al
+      subject = match[1].toUpperCase();
+      
+      // AYT/TYT Matematik ve Geometri'yi ayırmak için ek kontrol
+      if (subject === 'MATEMATİK' || subject === 'GEOMETRİ') {
+        if (book.name.includes('AYT MATEMATİK')) {
+          subject = 'AYT MATEMATİK';
+        } else if (book.name.includes('TYT MATEMATİK')) {
+          subject = 'TYT MATEMATİK';
+        } else if (book.name.includes('YKS GEOMETRİ')) {
+          subject = 'GEOMETRİ';
+        }
+      }
+      if (subject === 'TÜRKÇE') {
+         if (book.name.includes('TYT TÜRKÇE')) {
+          subject = 'TYT TÜRKÇE';
+        }
+      }
+      
+      // Kimya, Fizik, Biyoloji TYT/AYT ayrımı yapılmadı (şimdilik hepsi YKS olduğu varsayıldı)
+      if (subject === 'KİMYA' || subject === 'FİZİK' || subject === 'BİYOLOJİ') {
+        subject = `YKS ${subject}`;
+      }
+      
+    }
+    
+    if (!subjectGroups[subject]) {
+      subjectGroups[subject] = [];
+    }
+    subjectGroups[subject].push(book);
+  });
+  
+  return subjectGroups;
+};
+
 
 export default function Home() {
   const [theme, setTheme] = useState('dark');
@@ -11,14 +60,24 @@ export default function Home() {
   const [modalImage, setModalImage] = useState(null);
   const [videos, setVideos] = useState([]);
   const [fetchingVideos, setFetchingVideos] = useState(false);
-  const [fetchStatus, setFetchStatus] = useState(null); // { type: 'loading' | 'success' | 'error', message: string }
+  const [fetchStatus, setFetchStatus] = useState(null); 
 
   // Book Browser State
   const [books, setBooks] = useState(booksData);
+  // Yeni durum: Seçilen ders (örn: 'TYT MATEMATİK')
+  const [selectedSubject, setSelectedSubject] = useState(null); 
   const [selectedBook, setSelectedBook] = useState(null);
   const [bookTests, setBookTests] = useState([]);
   const [loadingTests, setLoadingTests] = useState(false);
   const [selectedTest, setSelectedTest] = useState(null);
+
+  // Kitapları derse göre gruplandırmak için useMemo kullanıldı
+  const groupedBooks = useMemo(() => groupBooksBySubject(books), [books]);
+  const subjects = useMemo(() => Object.keys(groupedBooks).sort(), [groupedBooks]);
+  
+  // Seçilen derse ait kitapları tutan değişken
+  const currentBooks = selectedSubject ? groupedBooks[selectedSubject] : [];
+
 
   // Theme Effect
   useEffect(() => {
@@ -64,7 +123,9 @@ export default function Home() {
               questionNumber: i,
               url: videoData.videoUrl
             });
-            setVideos([...newVideos]); // Update state progressively
+            // State'i yavaş yavaş güncellemek yerine, döngü sonunda toplu güncelleme daha verimli olabilir, 
+            // ancak progresif yükleme için bu şekilde bırakıldı.
+            setVideos([...newVideos]); 
           }
         } catch (err) {
           console.error(`Error fetching video for question ${i}:`, err);
@@ -115,9 +176,36 @@ export default function Home() {
 
   const handleTestSelect = (test) => {
     setSelectedTest(test);
-    // test.id corresponds to the data-rowid extracted from the book page
     handleFetch(test.id);
   };
+  
+  // Ders seçme işlevi
+  const handleSubjectSelect = (subject) => {
+    setSelectedSubject(subject);
+    setSelectedBook(null); // Yeni ders seçildiğinde kitap seçimi sıfırlanır
+  };
+  
+  // Geri butonuna basıldığında ders listesine dönme
+  const handleBackToSubjects = () => {
+    setSelectedSubject(null);
+    setSelectedBook(null);
+    setSelectedTest(null);
+    setBookTests([]);
+    setData(null);
+    setVideos([]);
+    setError(null);
+  }
+
+  // Geri butonuna basıldığında kitap listesine dönme
+  const handleBackToBooks = () => {
+    setSelectedBook(null);
+    setSelectedTest(null);
+    setBookTests([]);
+    setData(null);
+    setVideos([]);
+    setError(null);
+  }
+
 
   return (
     <main className="main-container">
@@ -129,19 +217,46 @@ export default function Home() {
           </button>
         </div>
 
-        {/* Book Browser UI */}
-        {!selectedBook ? (
+        {/* 📚 Kitap Tarayıcısı Arayüzü */}
+        {/* Adım 1: Ders Seçimi */}
+        {!selectedSubject && (
           <div className="books-grid">
-            {books.map((book) => (
-              <div key={book.id} className="book-card" onClick={() => handleBookSelect(book)}>
-                <h3>{book.name}</h3>
+            {subjects.map((subject) => (
+              <div 
+                key={subject} 
+                className="book-card subject-card" 
+                onClick={() => handleSubjectSelect(subject)}
+              >
+                <h3>{subject}</h3>
               </div>
             ))}
           </div>
-        ) : (
+        )}
+        
+        {/* Adım 2: Kitap Seçimi (Bir Ders Seçildikten Sonra) */}
+        {selectedSubject && !selectedBook && (
+          <div className="book-list-container">
+             <div className="nav-header">
+                <button className="back-button" onClick={handleBackToSubjects}>
+                  ← Derslere Dön
+                </button>
+                <h2 className="subtitle">{selectedSubject} Kitapları</h2>
+              </div>
+            <div className="books-grid books-in-subject">
+              {currentBooks.map((book) => (
+                <div key={book.id} className="book-card" onClick={() => handleBookSelect(book)}>
+                  <h3>{book.name}</h3>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Adım 3: Test ve Çözüm Görünümü (Bir Kitap Seçildikten Sonra) */}
+        {selectedBook && (
           <div className="book-detail">
             <div className="nav-header">
-              <button className="back-button" onClick={() => setSelectedBook(null)}>
+              <button className="back-button" onClick={handleBackToBooks}>
                 ← Kitaplara Dön
               </button>
               <h2 className="subtitle">{selectedBook.name}</h2>
@@ -169,6 +284,12 @@ export default function Home() {
                 {selectedTest && (
                   <>
                     <h3 className="test-title">{selectedTest.name}</h3>
+                    
+                    {error && (
+                      <div className="error-message">
+                         ⚠️ Hata: {error}
+                      </div>
+                    )}
 
                     {loading && (
                       <div className="fetch-status-container">
@@ -195,24 +316,30 @@ export default function Home() {
                     )}
 
                     {/* Status Indicator (Video Fetching) */}
-                    {fetchStatus && (
+                    {fetchStatus && fetchStatus.type !== 'success' && (
                       <div className="fetch-status-container">
                         <div className={`status-circle ${fetchStatus.type}`}></div>
                         <span className="status-message">{fetchStatus.message}</span>
                       </div>
+                    )}
+                    {fetchStatus && fetchStatus.type === 'success' && (
+                        <div className="fetch-status-container success-box">
+                            <div className="status-circle success"></div>
+                            <span className="status-message">{fetchStatus.message}</span>
+                        </div>
                     )}
 
                     {/* Video Solutions Section */}
                     {videos.length > 0 && (
                       <div className="section-card">
                         <div className="section-header">
-                          <h4 className="section-title">Video Çözümler</h4>
+                          <h4 className="section-title">Video Çözümler ({videos.length} adet)</h4>
                         </div>
                         <div className="questions-grid">
                           {videos.map((video) => (
                             <div key={video.questionNumber} className="video-card">
                               <div className="video-header">
-                                <span className="question-number" style={{ color: 'white', fontWeight: 'bold' }}>Soru {video.questionNumber}</span>
+                                <span className="question-number">Soru {video.questionNumber}</span>
                               </div>
                               <video controls src={video.url} className="video-player"></video>
                             </div>
