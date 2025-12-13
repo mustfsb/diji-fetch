@@ -1,9 +1,17 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import cookieManager from '@/lib/cookieManager';
+import type { BookTestsRequest, Test } from '@/types';
 
-export async function POST(request) {
+interface BookTestsApiResponse {
+    success?: boolean;
+    tests?: Test[];
+    error?: string;
+}
+
+export async function POST(request: NextRequest): Promise<NextResponse<BookTestsApiResponse>> {
     try {
-        const { id } = await request.json();
+        const body: BookTestsRequest = await request.json();
+        const { id } = body;
 
         if (!id) {
             return NextResponse.json({ error: 'Book ID is required' }, { status: 400 });
@@ -31,7 +39,7 @@ export async function POST(request) {
         // The previous split method might have been too aggressive or missed nested structures.
         // Using a global regex with matchAll is safer.
 
-        const tests = [];
+        const tests: Test[] = [];
         // Regex explanation:
         // <h3>(.*?)<\/h3>  -> Captures the title inside h3
         // [\s\S]*?         -> Matches any character (including newlines) non-greedily until...
@@ -45,7 +53,7 @@ export async function POST(request) {
             const id = match[2];
 
             // Decode HTML entities
-            title = title.replace(/&#(\d+);/g, (match, dec) => String.fromCharCode(dec));
+            title = title.replace(/&#(\d+);/g, (_match, dec) => String.fromCharCode(parseInt(dec, 10)));
 
             tests.push({
                 name: title,
@@ -60,4 +68,3 @@ export async function POST(request) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
-

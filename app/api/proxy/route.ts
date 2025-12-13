@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import cookieManager from '@/lib/cookieManager';
 
-export async function GET(request) {
+export async function GET(request: NextRequest): Promise<NextResponse> {
     const { searchParams } = new URL(request.url);
     const testId = searchParams.get('testId');
     const programId = searchParams.get('programId') || '14308';
@@ -36,6 +36,6 @@ export async function GET(request) {
 
     } catch (error) {
         console.error('Proxy Error:', error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
     }
 }
