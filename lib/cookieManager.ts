@@ -5,14 +5,20 @@ class CookieManager {
     private baseHeaders: HeaderRecord;
 
     constructor() {
+        // VERİLEN COOKIE DEĞERLERİ İLE GÜNCELLENMİŞ NESNE
         this.cookies = {
             "_ga": "GA1.1.566625878.1762887069",
             "_ga_L3RCSWSLG5": "GS2.1.s1764450862$o9$g1$t1764452337$j60$l0$h0",
-            "ASP.NET_SessionId": "r1guhnodztkqgguee3lfyksi",
-            "cf_clearance": "NoP.zLNneaJfb5wA7ma_LkeCkHtBKfgpkhQqfTmqZhM-1765610935-1.2.1.1-MIsJfDDxf.LITqGhw.fJOxQ9HwxHYWvjp31cayviQfTa1tVbVKJtmG8qFpmv647uGZVubIxxFoBMCXmxOhgn7yj0FAg9JAUBg9rQRB12r2siGK76epI656hycSIUA5CKYq02vi19WH2fZnDQZn5mTFuKyT0KPwMb6ZayqJjvkcMJvMEEnQsyYft1twUpFem6n93RJr2wUnZGU5W_hZFz76GHzyOvuBqXJdTtqf5HMN0",
-            "usrtkn": "tkn=r1guhnodztkqgguee3lfyksi",
-            "rememberMe": "UserName=J3AUH3EFT3VSK3A3G3LGQ3BFQ3L9L3PCI3I8H37V&Password=J3AUH3L0T42VK4S3G3JB"
+            "kullaniciId": "0", // Yeni eklenen
+            "soruCevap": '{"0":{"1120094":{},"1120095":{"0":{"1":"A"}}}}', // Yeni eklenen
+            "ASP.NET_SessionId": "vqazx23gbzmqugqtzq3ae03b",
+            "cf_clearance": "U.h9Se6OMjcmnmQT1sp3wI1k_QkeGS997PnvMdxCSWU-1765643691-1.2.1.1-EMxknQ4eQRgkSnMLb._gY.OSm1nTJjX2A5aBqZ8v70bubYcsr7XKzcfRNfaNQfZfiTtZeFfG1JHxgVBqvIbLqOUNpEIHcVNJQClvoW42KKL7BXirzPajbYEETRKRweQcln1OnSs4NvTJbZ89eHL6I05HUGFZz2TxKpLqKQVn_GD5CW2CXtHLUV4QN46BOovYHk5uhKb6ew11t4fJDsXH3WMD8zf7w7Q6OWkE9jhg88M",
+            "usrtkn": "tkn=vqazx23gbzmqugqtzq3ae03b",
+            "rememberMe": "UserName=M3FBD385H3C9G349N40CW3JLM3FBN3TLD3A7F34Y&Password=M3FBD3EBH3GLG4IKN3Y0"
         };
+        // Not: Çerez değeri içindeki tırnak işaretleri (\") ve noktalı virgüller (;) genellikle URL kodlaması gerektirir, 
+        // ancak bu yapıda doğrudan dize olarak tutulmaları da bir yöntemdir. 
+        // "soruCevap" değeri, bir dize olarak tanımlanmıştır.
 
         this.baseHeaders = {
             "Host": "www.dijidemi.com",
