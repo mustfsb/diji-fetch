@@ -1,18 +1,18 @@
-import { Montserrat } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
-const montserrat = Montserrat({
+const inter = Inter({
     subsets: ["latin"],
-    variable: "--font-montserrat",
-    weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+    variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
-    title: "Dijidemi Test Fetcher",
+    title: "DIJI-FETCH",
     description: "Dijidemi testlerini görüntüleme aracı",
 };
 
@@ -22,16 +22,18 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
     return (
-        <html lang="en">
-            <SpeedInsights />
-            <Analytics />
-            <body className={montserrat.className}>
-                <div className="background-blobs">
-                    <div className="blob blob-1"></div>
-                    <div className="blob blob-2"></div>
-                    <div className="blob blob-3"></div>
-                </div>
-                {children}
+        <html lang="tr" suppressHydrationWarning>
+            <body className={`${inter.variable} font-sans`}>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="dark"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    {children}
+                </ThemeProvider>
+                <SpeedInsights />
+                <Analytics />
             </body>
         </html>
     );

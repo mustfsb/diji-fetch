@@ -1,14 +1,24 @@
 'use client';
-import { useState, FormEvent, ChangeEvent } from 'react';
+
+import { useState, FormEvent } from 'react';
 import { LoginResponse } from '@/types';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { LogIn, Loader2 } from 'lucide-react';
 
 interface LoginModalProps {
     onClose: () => void;
     onLoginSuccess: (data: LoginResponse) => void;
-    accentColor?: string;
 }
 
-export default function LoginModal({ onClose, onLoginSuccess, accentColor = '#ef4444' }: LoginModalProps) {
+export default function LoginModal({ onClose, onLoginSuccess }: LoginModalProps) {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<string>('');
@@ -41,146 +51,67 @@ export default function LoginModal({ onClose, onLoginSuccess, accentColor = '#ef
     };
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content login-modal" onClick={(e) => e.stopPropagation()}>
-                <button className="close-button" onClick={onClose}>×</button>
-                <h2>Giriş Yap</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-group">
-                        <label>Kullanıcı Adı</label>
-                        <input
+        <Dialog open={true} onOpenChange={(open) => !open && onClose()}>
+            <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                    <DialogTitle className="text-2xl font-bold text-center">
+                        Giriş Yap
+                    </DialogTitle>
+                </DialogHeader>
+
+                <form onSubmit={handleSubmit} className="space-y-5 pt-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="username">Kullanıcı Adı</Label>
+                        <Input
+                            id="username"
                             type="text"
                             value={username}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+                            onChange={(e) => setUsername(e.target.value)}
                             required
-                            className="form-input"
                             placeholder="Örn: 14308-..."
+                            className="h-11"
                         />
                     </div>
-                    <div className="form-group">
-                        <label>Şifre</label>
-                        <input
+
+                    <div className="space-y-2">
+                        <Label htmlFor="password">Şifre</Label>
+                        <Input
+                            id="password"
                             type="password"
                             value={password}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                            onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="form-input"
-                            placeholder="••••••"
+                            placeholder="••••••••"
+                            className="h-11"
                         />
                     </div>
 
-                    {error && <div className="error-message">{error}</div>}
+                    {error && (
+                        <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm text-center">
+                            {error}
+                        </div>
+                    )}
 
-                    <button type="submit" className="submit-button" disabled={loading} style={{ background: accentColor }}>
-                        {loading ? 'Giriş Yapılıyor...' : 'Giriş Yap'}
-                    </button>
+                    <Button
+                        type="submit"
+                        className="w-full h-11 text-base font-semibold"
+                        disabled={loading}
+                        style={{ background: 'hsl(var(--accent))' }}
+                    >
+                        {loading ? (
+                            <>
+                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                Giriş Yapılıyor...
+                            </>
+                        ) : (
+                            <>
+                                <LogIn className="w-4 h-4 mr-2" />
+                                Giriş Yap
+                            </>
+                        )}
+                    </Button>
                 </form>
-            </div>
-            <style jsx>{`
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-        .login-modal {
-            background: rgba(30, 30, 30, 0.95);
-            padding: 2.5rem;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 420px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            position: relative;
-        }
-        .close-button {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: transparent;
-            border: none;
-            color: #aaa;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .close-button:hover {
-            color: white;
-        }
-        h2 {
-            margin-top: 0;
-            text-align: center;
-            margin-bottom: 2rem;
-            font-size: 1.8rem;
-            font-weight: 600;
-            background: linear-gradient(to right, #fff, #aaa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: #ddd;
-        }
-        .form-input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #444;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-        .form-input:focus {
-            outline: none;
-            border-color: #0070f3;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .submit-button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 1rem;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s, transform 0.1s;
-        }
-        .submit-button:hover {
-            opacity: 0.9;
-        }
-        .submit-button:active {
-            transform: scale(0.98);
-        }
-        .submit-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .error-message {
-            color: #ff4d4f;
-            background: rgba(255, 77, 79, 0.1);
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 1rem;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-      `}</style>
-        </div>
+            </DialogContent>
+        </Dialog>
     );
 }
